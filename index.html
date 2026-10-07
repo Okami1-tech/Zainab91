@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Sarauniya — When Everything Became You</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050207;color:#fff;font-family:Georgia,serif}body{touch-action:none}
+canvas{position:fixed;inset:0;width:100%;height:100%}
+#veil{position:fixed;inset:0;background:#050207;z-index:9;display:grid;place-items:center;text-align:center;transition:opacity 1.8s}
+.box{padding:28px}.ey{font:9px Arial;letter-spacing:6px;color:#ff9acb;text-transform:uppercase}.box h1{font-size:clamp(42px,12vw,82px);font-weight:400;line-height:.88;margin:20px 0;text-shadow:0 0 45px #ff3b9d55}.box p{color:#dfc3d2;line-height:1.8}button{margin-top:18px;padding:16px 27px;border:1px solid #ff9dcc77;border-radius:99px;background:#ffffff08;color:white;letter-spacing:4px;font-size:10px}
+#ui{position:fixed;inset:0;z-index:5;pointer-events:none}.s{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:28px;opacity:0;transform:scale(.92);transition:1.25s}.s.on{opacity:1;transform:scale(1)}.w{max-width:700px}.k{font:9px Arial;letter-spacing:6px;text-transform:uppercase;color:#ff9dcc;margin-bottom:18px}h2{font-size:clamp(38px,11vw,80px);font-weight:400;line-height:.92;margin:0;text-shadow:0 0 35px #ff4aa955}.s p{font-size:clamp(16px,4.4vw,22px);line-height:1.7;color:#edd5e1}.hint{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);font:9px Arial;letter-spacing:3px;text-transform:uppercase;color:#d7a8c2;white-space:nowrap}
+#letter{position:fixed;inset:0;z-index:12;display:grid;place-items:center;padding:20px;opacity:0;pointer-events:none;transition:1.6s}.paper{width:min(92vw,690px);max-height:88vh;overflow:auto;padding:38px 28px 44px;border-radius:30px;background:linear-gradient(145deg,#fff8fb,#f5d7e8);color:#472a3b;box-shadow:0 0 100px #ff3d9d44,0 30px 100px #000}.paper h3{font-size:32px;color:#a22d70;font-weight:400;margin:0 0 22px}.paper p{font-size:16px;line-height:1.85;margin:15px 0}.sig{font-family:cursive;font-size:29px;color:#a22d70;margin-top:25px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="veil"><div class="box"><div class="ey">something different</div><h1>Watch it<br>become alive.</h1><p>Don't tap too quickly.<br>Let the rain fall first.</p><button id="go">Begin ♡</button></div></div>
+
+<div id="ui">
+<section class="s"><div class="w"><div class="k">before you</div><h2>There was only rain.</h2><p>Thousands of tiny drops falling through an empty night.</p></div></section>
+<section class="s"><div class="w"><div class="k">then something changed</div><h2>The rain<br>started remembering.</h2><p>Every drop began drifting toward the same invisible place.</p></div></section>
+<section class="s"><div class="w"><div class="k">look closer</div><h2>It's not a picture.</h2><p>It's happening in front of you.</p></div></section>
+<section class="s"><div class="w"><div class="k">and then</div><h2>The rain became<br>a heartbeat.</h2><p>Drop by drop, the shape became warmer.</p></div></section>
+<section class="s"><div class="w"><div class="k">something else joined</div><h2>Flowers began<br>to bloom inside it.</h2><p>Because some things are better grown than drawn.</p></div></section>
+<section class="s"><div class="w"><div class="k">watch the petals</div><h2>They found<br>their places.</h2><p>Not perfect. Not mathematical. Just alive.</p></div></section>
+<section class="s"><div class="w"><div class="k">the secret</div><h2>Every little light<br>is saying one name.</h2></div></section>
+<section class="s"><div class="w"><div class="k">finally</div><h2>Sarauniya.</h2><p>The garden, the rain, the little lights—everything was only trying to say you.</p></div></section>
+<section class="s"><div class="w"><div class="k">Muhammad → Hayati</div><h2>Some feelings<br>shouldn't be designed.</h2><p>They should be grown slowly, cared for, and protected.</p></div></section>
+<div class="hint">touch the rain • hold your finger • watch it bend</div>
+</div>
+
+<div id="letter"><article class="paper"><h3>My Hayati,</h3>
+<p>I wanted today to feel completely different from yesterday.</p>
+<p>Yesterday, I gave you the universe.</p>
+<p>Today, I wanted to show you something that feels closer to us.</p>
+<p>Something that grows.</p>
+<p>So I made the rain fall first. Then I let the flowers find their way through it. I didn't want to draw a perfect heart for you. I wanted the heart to <i>happen</i>.</p>
+<p>Drop by drop. Petal by petal. Light by light.</p>
+<p>Because that is how the most beautiful things feel to me. They don't arrive finished. They become beautiful because someone keeps choosing to care for them.</p>
+<p>And somewhere along the way, you became something I want to keep choosing.</p>
+<p>Thank you for being real. Thank you for your care, your encouragement, your softness, and all the little things that have become much bigger in my heart than you probably realize.</p>
+<p>If Allah wills, may whatever He has written for us grow with mercy, patience, understanding and barakah until one day we look back and smile at how small the beginning was.</p>
+<p>And if you ever ask what this whole garden was supposed to become...</p>
+<p>It was never really a garden.</p>
+<p>It was my way of saying: <b>you are deeply loved.</b></p>
+<div class="sig">My Queen 👑</div></article></div>
+
+<script>
+const C=document.getElementById('c'),X=C.getContext('2d');let W,H,D,mode='rain',scene=-1,started=false,timer;
+let drops=[],petals=[],lights=[],touch={x:-999,y:-999,down:false};
+function resize(){W=innerWidth;H=innerHeight;D=Math.min(devicePixelRatio||1,2);C.width=W*D;C.height=H*D;C.style.width=W+'px';C.style.height=H+'px';X.setTransform(D,0,0,D,0,0)}addEventListener('resize',resize);resize();
+
+function hp(t,scale){return{x:16*Math.sin(t)**3*scale,y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))*scale}}
+function inHeart(i,n,spread=1){let t=i/n*Math.PI*2,p=hp(t,.016*Math.min(W,H));let r=(Math.random()-.5)*spread*18;return{x:W/2+p.x+r,y:H/2+p.y+r}}
+function init(){
+ drops=[];petals=[];lights=[];
+ for(let i=0;i<850;i++)drops.push({x:Math.random()*W,y:Math.random()*H,v:3+Math.random()*7,s:.4+Math.random()*1.8,a:.15+Math.random()*.65});
+ for(let i=0;i<180;i++)petals.push({x:W/2+(Math.random()-.5)*W,y:H/2+(Math.random()-.5)*H,tx:0,ty:0,a:Math.random()*6.28,r:2+Math.random()*3,life:0});
+ for(let i=0;i<170;i++)lights.push({x:Math.random()*W,y:H*.2+Math.random()*H*.6,s:.5+Math.random()*2,p:Math.random()*6.28});
+}init();
+
+function draw(t){
+ X.clearRect(0,0,W,H);
+ let cx=W/2,cy=H/2;
+ let grad=X.createRadialGradient(cx,cy,10,cx,cy,Math.max(W,H)*.65);grad.addColorStop(0,'#ff3c9d14');grad.addColorStop(1,'#0000');X.fillStyle=grad;X.fillRect(0,0,W,H);
+
+ drops.forEach((d,i)=>{
+   let tx=d.x,ty=d.y;
+   if(mode==='heart'||mode==='petalHeart'){
+     let q=inHeart(i,drops.length,mode==='petalHeart'?.65:1);tx=q.x;ty=q.y;
+     d.x+=(tx-d.x)*.018;d.y+=(ty-d.y)*.018;
+   }else{d.y+=d.v;if(d.y>H+20){d.y=-20;d.x=Math.random()*W}}
+   if(touch.down){let dx=touch.x-d.x,dy=touch.y-d.y,dd=Math.hypot(dx,dy);if(dd<150){d.x+=dx*.012;d.y+=dy*.012}}
+   X.beginPath();X.strokeStyle=`rgba(220,190,255,${d.a})`;X.lineWidth=d.s;X.moveTo(d.x,d.y);X.lineTo(d.x,d.y+5+d.v);X.stroke();
+ });
+
+ if(mode==='petalHeart'||mode==='final'){
+   petals.forEach((p,i)=>{
+     let q=inHeart(i,petals.length,1.8);p.tx=q.x;p.ty=q.y;p.life=Math.min(1,p.life+.012);p.x+=(p.tx-p.x)*.025;p.y+=(p.ty-p.y)*.025;
+     X.save();X.translate(p.x,p.y);X.rotate(p.a+Math.sin(t*.002+i)*.5);X.globalAlpha=p.life;
+     X.fillStyle=i%3?'#ff72b6':'#ffb1d8';X.beginPath();X.ellipse(0,0,p.r,p.r*2.3,0,0,Math.PI*2);X.fill();X.restore();
+   });
+ }
+ lights.forEach((l,i)=>{
+   if(mode==='final'||mode==='petalHeart'){
+     let q=inHeart(i,lights.length,1.4);l.x+=(q.x-l.x)*.018;l.y+=(q.y-l.y)*.018;
+   }else{l.x+=Math.sin(t*.0005+i)*.15;l.y+=Math.cos(t*.0006+i)*.1}
+   let a=.2+.45*(Math.sin(t*.002+l.p)+1)/2;X.beginPath();X.fillStyle=`rgba(255,190,225,${a})`;X.shadowBlur=14;X.shadowColor='#ff55aa';X.arc(l.x,l.y,l.s,0,Math.PI*2);X.fill();X.shadowBlur=0;
+ });
+ if(mode==='final'){
+   X.save();X.translate(cx,cy);X.strokeStyle='#ff9ed0';X.globalAlpha=.35;X.lineWidth=1.5;X.shadowBlur=25;X.shadowColor='#ff42a7';X.beginPath();
+   for(let i=0;i<=240;i++){let p=hp(i/240*Math.PI*2,.016*Math.min(W,H));i?X.lineTo(p.x,p.y):X.moveTo(p.x,p.y)}X.closePath();X.stroke();X.restore();
+ }
+ requestAnimationFrame(draw);
+}requestAnimationFrame(draw);
+
+function show(n){scene=n;document.querySelectorAll('.s').forEach((e,i)=>e.classList.toggle('on',i===n));
+ if(n<2)mode='rain';else if(n<4)mode='heart';else if(n<6)mode='petalHeart';else mode='final';
+}
+function next(){if(!started)return;if(scene<8){show(scene+1);clearTimeout(timer);timer=setTimeout(next,scene===2||scene===4||scene===5?4100:3400)}else{document.getElementById('ui').style.opacity=0;setTimeout(()=>{document.getElementById('letter').style.opacity=1;document.getElementById('letter').style.pointerEvents='auto'},1200)}}
+document.getElementById('go').onclick=()=>{started=true;document.getElementById('veil').style.opacity=0;setTimeout(()=>document.getElementById('veil').remove(),1700);show(0);timer=setTimeout(next,3400)};
+C.addEventListener('pointerdown',e=>{touch.down=true;touch.x=e.clientX;touch.y=e.clientY;if(started&&scene<8){clearTimeout(timer);next()}});
+C.addEventListener('pointermove',e=>{touch.x=e.clientX;touch.y=e.clientY});
+C.addEventListener('pointerup',()=>touch.down=false);C.addEventListener('pointercancel',()=>touch.down=false);
+</script>
+</body>
+</html>
